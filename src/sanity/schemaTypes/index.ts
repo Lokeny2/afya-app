@@ -1,4 +1,3 @@
-// src/sanity/schemaTypes/index.ts
 import { type SchemaTypeDefinition } from "sanity";
 
 const condition: SchemaTypeDefinition = {
@@ -12,6 +11,19 @@ const condition: SchemaTypeDefinition = {
       type: "string",
     },
     {
+      name: "category",
+      title: "Category",
+      type: "string",
+      options: {
+        list: [
+          { title: "Common", value: "common" },
+          { title: "Major", value: "major" },
+          { title: "Wellness", value: "wellness" },
+        ],
+        layout: "radio",
+      },
+    },
+    {
       name: "description",
       title: "Description",
       type: "text",
@@ -21,6 +33,39 @@ const condition: SchemaTypeDefinition = {
       title: "Symptoms",
       type: "array",
       of: [{ type: "string" }],
+    },
+    {
+      name: "riskFactors",
+      title: "Risk Factors",
+      type: "array",
+      of: [{ type: "string" }],
+    },
+    {
+      name: "earlyWarningSigns",
+      title: "Early Warning Signs",
+      type: "array",
+      of: [{ type: "string" }],
+    },
+    {
+      name: "diagnosticOverview",
+      title: "Diagnostic Overview",
+      type: "text",
+    },
+    {
+      name: "screeningGuidelines",
+      title: "Screening Guidelines",
+      type: "text",
+    },
+    {
+      name: "mythBusting",
+      title: "Myth Busting",
+      type: "text",
+    },
+    {
+      name: "showClinicalDisclaimer",
+      title: "Show Clinical Disclaimer",
+      type: "boolean",
+      initialValue: true,
     },
   ],
 };
