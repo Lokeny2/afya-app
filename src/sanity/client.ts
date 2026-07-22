@@ -1,6 +1,7 @@
 // src/sanity/client.ts
 import { createClient } from "@sanity/client";
 import { apiVersion, dataset, projectId } from "./env";
+import { allConditionsQuery } from "./queries";
 
 export const client = createClient({
   projectId,
@@ -10,10 +11,5 @@ export const client = createClient({
 });
 
 export async function getConditions() {
-  return client.fetch(`*[_type == "condition"]{
-    _id,
-    title,
-    description,
-    symptoms
-  }`);
+  return client.fetch(allConditionsQuery);
 }

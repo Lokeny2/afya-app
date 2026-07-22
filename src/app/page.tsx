@@ -21,6 +21,7 @@ interface Condition {
 export default function Home() {
   const [conditions, setConditions] = useState<Condition[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loading, setLoading] = useState(true);
   const [selectedCondition, setSelectedCondition] = useState<Condition | null>(
     null,
@@ -38,7 +39,7 @@ export default function Home() {
       });
   }, []);
 
-  // Filter conditions based on title, description, or matching symptoms
+  // Filter conditions based on category and search query (title, description, or symptoms)
   const filteredConditions = conditions.filter((item) => {
     const query = searchQuery.toLowerCase();
     const matchesTitle = item.title?.toLowerCase().includes(query);
@@ -46,7 +47,12 @@ export default function Home() {
     const matchesSymptoms = item.symptoms?.some((symptom) =>
       symptom.toLowerCase().includes(query),
     );
-    return matchesTitle || matchesDescription || matchesSymptoms;
+
+    const matchesSearch = matchesTitle || matchesDescription || matchesSymptoms;
+    const matchesCategory =
+      selectedCategory === "all" || item.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -61,6 +67,28 @@ export default function Home() {
             insights.
           </p>
         </header>
+
+        {/* Category Filter Tabs */}
+        <div className="flex flex-wrap gap-2 mb-6 justify-center">
+          {[
+            { label: "All", value: "all" },
+            { label: "Major Diseases", value: "major" },
+            { label: "Common Ailments", value: "common" },
+            { label: "Wellness Guides", value: "wellness" },
+          ].map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => setSelectedCategory(tab.value)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                selectedCategory === tab.value
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
 
         {/* Search Input Bar */}
         <div className="mb-8">
@@ -144,7 +172,7 @@ export default function Home() {
               ✕
             </button>
 
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex items-center gap-3 mb-2 flex-wrap">
               <h2 className="text-2xl font-bold text-slate-900">
                 {selectedCondition.title}
               </h2>
